@@ -94,17 +94,19 @@ const Projects = () => {
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-end p-6">
                 {/* Content Wrapper */}
-                <div className="transform translate-y-10 group-hover:translate-y-0 transition duration-500">
+                <div className="transform md:translate-y-10 md:group-hover:translate-y-0 transition duration-500">
+                  {/* Title */}
                   <h3 className="text-xl font-semibold mb-2">
                     {project.title}
                   </h3>
 
-                  <p className="text-sm text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-100">
+                  {/* Description */}
+                  <p className="text-sm text-gray-300 mb-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition duration-500 delay-100">
                     {project.description}
                   </p>
 
                   {/* Buttons */}
-                  <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-200">
+                  <div className="flex gap-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition duration-500 delay-200">
                     <a
                       href={project.live}
                       target="_blank"
