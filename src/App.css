@@ -2,8 +2,11 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+
+
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 @keyframes slide {

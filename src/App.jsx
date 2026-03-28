@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import './App.css';
+import React, { useState, useEffect, useRef } from "react";
+import "./App.css";
 import Skills from "./skills";
 import Projects from "./projects";
 import Contact from "./contact";
@@ -13,14 +13,15 @@ const App = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [solidNav, setSolidNav] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
 
+  const sections = ["home", "about", "skills", "projects", "contact"];
+
+  // Handle Scroll (active section + navbar bg)
   useEffect(() => {
-    const sections = ["home", "about", "skills", "projects", "contact"];
-
     const handleScroll = () => {
       const scrollPos = window.scrollY + window.innerHeight / 4;
 
-      // Active nav item
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
         if (el && scrollPos >= el.offsetTop) {
@@ -29,29 +30,66 @@ const App = () => {
         }
       }
 
-      // Navbar transparency toggle
-      if (window.scrollY > 60) setSolidNav(true);
-      else setSolidNav(false);
+      setSolidNav(window.scrollY > 60);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock scroll when menu open
+  // Lock scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
   }, [menuOpen]);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
+
+ useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 768) {
+      setMenuOpen(false);
+    }
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+  // Nav click (desktop)
   const handleNavClick = (sec) => (e) => {
     e.preventDefault();
+
     const el = document.getElementById(sec);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+
+    if (el) {
+      const navbarHeight = document.querySelector("nav")?.offsetHeight || 80;
+      const y = el.getBoundingClientRect().top + window.scrollY - navbarHeight;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    }
+
+    setMenuOpen(false);
   };
 
   return (
     <div className="relative w-full text-white overflow-x-hidden">
-      {/* Navbar */}
+      {/* ================= NAVBAR ================= */}
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-md ${
           solidNav ? "bg-white/80 py-4" : "bg-black/0 py-6"
@@ -60,7 +98,7 @@ const App = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-16">
           {/* Logo */}
           <div
-            className={`text-xl font-semibold tracking-[0.3em] transition-colors duration-300 ${
+            className={`text-xl font-semibold tracking-[0.3em] ${
               solidNav ? "text-black" : "text-white"
             }`}
           >
@@ -69,12 +107,12 @@ const App = () => {
 
           {/* Desktop Nav */}
           <ul className="hidden md:flex gap-12 text-xs uppercase tracking-[0.25em]">
-            {["home", "about", "skills", "projects", "contact"].map((sec) => (
+            {sections.map((sec) => (
               <li key={sec} className="relative">
                 <a
                   href={`#${sec}`}
                   onClick={handleNavClick(sec)}
-                  className={`relative pb-1 transition-colors duration-300 ${
+                  className={`relative pb-1 ${
                     solidNav
                       ? "text-black hover:text-gray-600"
                       : "text-white hover:text-gray-300"
@@ -83,7 +121,7 @@ const App = () => {
                   {sec.charAt(0).toUpperCase() + sec.slice(1)}
 
                   {activeSection === sec && (
-                    <span className="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-gradient-to-r from-purple-500 via-yellow-400 to-transparent" />
+                    <span className="absolute left-0 bottom-0 h-[2px] w-full bg-gradient-to-r from-purple-500 via-yellow-400 to-transparent" />
                   )}
                 </a>
               </li>
@@ -93,55 +131,60 @@ const App = () => {
           {/* Mobile Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`md:hidden transition-colors duration-300 ${
-              solidNav ? "text-black" : "text-white"
-            }`}
+            className={`md:hidden ${solidNav ? "text-black" : "text-white"}`}
           >
             {menuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* ================= MOBILE MENU ================= */}
         {menuOpen && (
           <div className="fixed inset-0 z-40 flex items-start justify-center pt-28 bg-black/40 backdrop-blur-sm">
-            {/* Card */}
             <motion.div
+              ref={menuRef}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="w-[85%] max-w-sm bg-white text-black rounded-2xl shadow-xl px-8 py-10"
             >
               <ul className="flex flex-col items-center gap-8 text-sm uppercase tracking-[0.25em]">
-                {["home", "about", "skills", "projects", "contact"].map(
-                  (sec) => (
-                    <li key={sec} className="relative">
-                      <a
-                        href={`#${sec}`}
-                        onClick={(e) => {
-                          e.preventDefault();
+                {sections.map((sec) => (
+                  <li key={sec} className="relative">
+                    <a
+                      href={`#${sec}`}
+                      onClick={(e) => {
+                        e.preventDefault();
 
-                          const el = document.getElementById(sec);
+                        const el = document.getElementById(sec);
 
-                          // Close menu FIRST
-                          setMenuOpen(false);
+                        setMenuOpen(false);
 
-                          // Delay scroll slightly so menu unmounts cleanly
-                          setTimeout(() => {
-                            el?.scrollIntoView({ behavior: "smooth" });
-                          }, 100);
-                        }}
-                        className="relative pb-1 text-center"
-                      >
-                        {sec.charAt(0).toUpperCase() + sec.slice(1)}
+                        setTimeout(() => {
+                          if (el) {
+                            const navbarHeight =
+                              document.querySelector("nav")?.offsetHeight || 80;
+                            const y =
+                              el.getBoundingClientRect().top +
+                              window.scrollY -
+                              navbarHeight;
 
-                        {activeSection === sec && (
-                          <span className="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-gradient-to-r from-purple-500 via-yellow-400 to-transparent" />
-                        )}
-                      </a>
-                    </li>
-                  ),
-                )}
+                            window.scrollTo({
+                              top: y,
+                              behavior: "smooth",
+                            });
+                          }
+                        }, 120);
+                      }}
+                    >
+                      {sec.charAt(0).toUpperCase() + sec.slice(1)}
+
+                      {/*ACTIVE INDICATOR */}
+                      {activeSection === sec && (
+                       <span className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-[70%] bg-gradient-to-r from-purple-500 via-yellow-400 to-transparent rounded-full transition-all duration-300" />
+                      )}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </motion.div>
           </div>
