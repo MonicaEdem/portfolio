@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Menu, X } from "lucide-react";
 
 const Contact = () => {
   const [status, setStatus] = useState("idle");
@@ -31,7 +31,7 @@ const Contact = () => {
   return (
     <>
       {/* CONTACT SECTION */}
-      <section id="contact" className="relative w-full bg-white text-black px-6 md:px-16 py-28 overflow-hidden">
+      <section id="contact" className="relative w-full bg-white text-black px-6 md:px-16 pt-20 pb-28 overflow-hidden">
         {/* Animated layered waves */}
         <div className="absolute bottom-0 left-0 w-full h-36 overflow-hidden">
           {/* Wave 1 */}

@@ -17,7 +17,7 @@ const Skills = () => {
     {
       title: "Tools & Platforms",
       icon: <GitBranch size={26} />,
-      items: ["Git", "GitHub", "Netlify", "Vercel"],
+      items: ["Git", "GitHub", "Figma", "Netlify", "Vercel"],
     },
     {
       title: "Practices",
