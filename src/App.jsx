@@ -16,6 +16,7 @@ const App = () => {
   const menuRef = useRef();
 
   const sections = ["home", "about", "skills", "projects", "contact"];
+  const [showMore, setShowMore] = useState(false);
 
   // Handle Scroll (active section + navbar bg)
   useEffect(() => {
@@ -57,16 +58,16 @@ const App = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
- useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 768) {
-      setMenuOpen(false);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMenuOpen(false);
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Nav click (desktop)
   const handleNavClick = (sec) => (e) => {
@@ -180,7 +181,7 @@ const App = () => {
 
                       {/*ACTIVE INDICATOR */}
                       {activeSection === sec && (
-                       <span className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-[70%] bg-gradient-to-r from-purple-500 via-yellow-400 to-transparent rounded-full transition-all duration-300" />
+                        <span className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-[70%] bg-gradient-to-r from-purple-500 via-yellow-400 to-transparent rounded-full transition-all duration-300" />
                       )}
                     </a>
                   </li>
@@ -241,7 +242,7 @@ const App = () => {
       {/* About Section */}
       <section
         id="about"
-        className="w-full bg-white text-black px-6 md:px-16 py-20"
+        className="w-full bg-white text-black px-6 md:px-16 py-22"
       >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
           {/* LEFT - TEXT */}
@@ -258,6 +259,7 @@ const App = () => {
             </h2>
 
             <div className="space-y-5 text-gray-700 text-lg leading-relaxed">
+              {/* ALWAYS VISIBLE */}
               <p>
                 Hello! I’m Monica Kokovena, a frontend developer based in Accra,
                 Ghana. With a background in Computer Science and a Master’s in
@@ -265,6 +267,7 @@ const App = () => {
                 building digital solutions that are both functional and
                 user-friendly.
               </p>
+
               <p>
                 Over the years, I’ve collaborated on diverse projects; from
                 developing reusable components for news platforms to delivering
@@ -272,36 +275,57 @@ const App = () => {
                 ideas into seamless, intuitive web experiences that delight
                 users and meet business goals.
               </p>
-              <p>
-                My approach to development emphasizes clean design, responsive
-                interfaces, and collaboration. I thrive in dynamic environments
-                where I can contribute to the entire product lifecycle—design,
-                implementation, testing, and optimization.
-              </p>
-              <p>
-                Beyond coding, I’m passionate about learning, solving
-                challenging problems, and creating web experiences that leave a
-                lasting impact. I’m always excited to explore new technologies
-                and bring innovative ideas to life.
-              </p>
-              <p>
-                I also believe in creating designs that are visually engaging,
-                intuitive, and modern. Combining functionality with aesthetics
-                is key to delivering digital experiences that truly resonate
-                with users.
-              </p>
+
+              {/* HIDDEN UNTIL READ MORE */}
+              <div
+                className={`transition-all duration-500 overflow-hidden mt-[-10px] ${
+                  showMore ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="space-y-5 mt-5">
+                  <p>
+                    My approach to development emphasizes clean design,
+                    responsive interfaces, and collaboration. I thrive in
+                    dynamic environments where I can contribute to the entire
+                    product lifecycle—design, implementation, testing, and
+                    optimization.
+                  </p>
+
+                  <p>
+                    Beyond coding, I’m passionate about learning, solving
+                    challenging problems, and creating web experiences that
+                    leave a lasting impact. I’m always excited to explore new
+                    technologies and bring innovative ideas to life.
+                  </p>
+
+                  <p>
+                    I also believe in creating designs that are visually
+                    engaging, intuitive, and modern. Combining functionality
+                    with aesthetics is key to delivering digital experiences
+                    that truly resonate with users.
+                  </p>
+                </div>
+              </div>
             </div>
+
+            {/* BUTTON */}
+            <button
+              onClick={() => setShowMore(!showMore)}
+              className="mt-6 text-xs uppercase tracking-[0.3em] border-b border-black pb-1 hover:text-gray-600 transition"
+            >
+              {showMore ? "Read Less" : "Read More"}
+            </button>
           </div>
 
           {/* RIGHT - IMAGE + ART */}
           <div className="relative flex justify-center order-1 lg:order-2 mt-10 lg:mt-0">
-            {/* 🔮 PURPLE GLOW */}
+            {/* PURPLE GLOW */}
             <div className="absolute w-[260px] md:w-[320px] h-[260px] md:h-[320px] bg-purple-500/70 blur-[80px] rounded-full animate-pulse"></div>
 
-            {/* 🌕 YELLOW GLOW */}
+            {/* YELLOW GLOW */}
             <div className="absolute w-[200px] md:w-[260px] h-[200px] md:h-[260px] bg-yellow-400/60 blur-[60px] rounded-full animate-pulse"></div>
 
-            {/* 🟡 YELLOW RING */}
+            {/* YELLOW RING */}
             <div className="absolute w-[260px] md:w-[320px] h-[260px] md:h-[320px] border-[4px] md:border-[6px] border-yellow-400/70 rounded-full animate-spin-slow"></div>
 
             {/* ICONS */}
@@ -323,7 +347,7 @@ const App = () => {
               />
             </div>
 
-            {/* 👇 ONLY THIS PART IS NEW */}
+            {/* ONLY THIS PART IS NEW */}
             <div className="relative z-10 flex flex-col items-center">
               {/* IMAGE (UNCHANGED) */}
               <img
