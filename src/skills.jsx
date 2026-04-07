@@ -51,7 +51,7 @@ const Skills = () => {
 
   return (
     <section id="skills" className="w-full bg-white text-black px-6 md:px-16 pt-10 pb-20">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
 
         {/* Title */}
         <p className="uppercase tracking-[0.4em] text-sm text-gray-400 mb-4">
@@ -68,14 +68,14 @@ const Skills = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid md:grid-cols-2 gap-10"
+          className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 md:gap-8 lg:gap-10"
         >
           {skills.map((skill, index) => (
             <motion.div
               key={index}
               variants={item}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="relative border border-gray-200 rounded-2xl p-8 
+              className="relative border border-gray-200 rounded-2xl p-6 md:p-8 lg:p-10 
               hover:shadow-2xl transition-all duration-300 group overflow-hidden"
             >
               {/* ✨ Neon Glow Effect */}
@@ -107,7 +107,7 @@ const Skills = () => {
               />
 
               {/* Items */}
-              <ul className="space-y-3 text-gray-600 relative z-10">
+              <ul className="space-y-3 text-gray-600 relative z-10 max-w-sm">
                 {skill.items.map((item, i) => (
                   <motion.li
                     key={i}
