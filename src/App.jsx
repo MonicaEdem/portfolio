@@ -96,7 +96,7 @@ const App = () => {
           solidNav ? "bg-white/80 py-4" : "bg-black/0 py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-16">
+        <div className="max-w-[1400px] xl:max-w-[1600px] mx-auto flex items-center justify-between px-6 md:px-12 lg:px-16">
           {/* Logo */}
           <div
             className={`text-xl font-semibold tracking-[0.3em] ${
@@ -107,7 +107,7 @@ const App = () => {
           </div>
 
           {/* Desktop Nav */}
-          <ul className="hidden md:flex gap-12 text-xs uppercase tracking-[0.25em]">
+          <ul className="hidden md:flex gap-8 lg:gap-10 xl:gap-12 text-xs uppercase tracking-[0.25em]">
             {sections.map((sec) => (
               <li key={sec} className="relative">
                 <a
@@ -193,46 +193,53 @@ const App = () => {
       </nav>
 
       {/* Hero Section */}
+      {/* ================= HERO ================= */}
       <motion.section
         id="home"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="relative flex flex-col items-center justify-center text-center h-screen bg-gradient-to-b from-black via-neutral-900 to-black px-6"
+        className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-neutral-900 to-black"
       >
-        {/* Small intro */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="uppercase tracking-[0.6em] text-xs text-gray-400 mb-6"
-        >
-          Monica Edem Kokovena
-        </motion.p>
+        {/* CONTAINER (THIS IS THE FIX) */}
+        <div className="w-full max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 xl:px-20 text-center flex flex-col items-center justify-center">
+          {/* SMALL INTRO */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="uppercase tracking-[0.6em] text-xs md:text-sm text-gray-400 mb-6"
+          >
+            Monica Edem Kokovena
+          </motion.p>
 
-        {/* Main title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="text-[4rem] md:text-[7rem] lg:text-[9rem] font-extrabold leading-none tracking-tight"
-        >
-          DEVELOPER
-        </motion.h1>
+          {/* MAIN TITLE (FLUID TEXT 🔥) */}
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="font-extrabold leading-none tracking-tight"
+            style={{
+              fontSize: "clamp(3rem, 8vw, 9rem)",
+            }}
+          >
+            DEVELOPER
+          </motion.h1>
 
-        {/* CTA */}
-        <motion.a
-          href="/cv.pdf"
-          download
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="mt-14 px-12 py-3 border border-white text-xs uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-300"
-        >
-          Download CV
-        </motion.a>
+          {/* CTA */}
+          <motion.a
+            href="/cv.pdf"
+            download
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="inline-block mt-10 md:mt-14 px-8 md:px-12 py-3 border border-white text-xs uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-300"
+          >
+            Download CV
+          </motion.a>
+        </div>
 
-        {/* Scroll indicator */}
+        {/* SCROLL INDICATOR */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 text-xs tracking-[0.3em]">
           <span>SCROLL</span>
           <div className="w-[1px] h-10 bg-white animate-pulse"></div>
